@@ -1,5 +1,6 @@
 package co.neeve.nae2.client.rendering.helpers.beamformer.renderers;
 
+import co.neeve.nae2.client.rendering.helpers.ShaderManager;
 import co.neeve.nae2.client.rendering.helpers.beamformer.IBeamFormerRenderer;
 import co.neeve.nae2.client.rendering.helpers.beamformer.setups.ModernBeamBloomSetup;
 import co.neeve.nae2.common.interfaces.IBeamFormer;
@@ -13,6 +14,7 @@ import javax.annotation.Nullable;
 import static co.neeve.nae2.client.rendering.helpers.BeamFormerRenderHelper.*;
 
 public class ModernBeamFormerRenderer implements IBeamFormerRenderer {
+	private final IBeamFormerRenderer nativeRenderer = NativeBeamFormerRenderer.create();
 	private final Object setup;
 
 	private ModernBeamFormerRenderer() {
@@ -53,7 +55,14 @@ public class ModernBeamFormerRenderer implements IBeamFormerRenderer {
 
 	@Override
 	public boolean shouldRenderDynamic(IBeamFormer partBeamFormer) {
-		return false;
+		return ShaderManager.isOptifineShaderPackLoaded();
+	}
+
+	@Override
+	public void renderDynamic(final IBeamFormer partBeamFormer, final double x, final double y, final double z, final float partialTicks) {
+		if (shouldRenderDynamic(partBeamFormer)) {
+			nativeRenderer.renderDynamic(partBeamFormer, x, y, z, partialTicks);
+		}
 	}
 
 	@Override
