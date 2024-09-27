@@ -2,10 +2,10 @@ package co.neeve.nae2.common.recipes.handlers;
 
 import appeng.api.AEApi;
 import appeng.api.definitions.IItemDefinition;
+import appeng.api.implementations.items.IStorageCell;
 import appeng.api.storage.data.IAEStack;
 import appeng.api.storage.data.IItemList;
 import co.neeve.nae2.NAE2;
-import co.neeve.nae2.common.items.cells.vc.VoidCell;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
@@ -47,11 +47,11 @@ public final class DisassembleRecipe extends net.minecraftforge.registries.IForg
 		this.nonCellMappings.put(blocks.storageCrafting4096K(), mats.cellPart4096K());
 		this.nonCellMappings.put(blocks.storageCrafting16384K(), mats.cellPart16384K());
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	private static <T extends IAEStack<T>> IItemList<T> getStorageList(final ItemStack stack) {
-		var item = (VoidCell<T>) stack.getItem();
-		var channel = item.getStorageChannel();
+		var item = (IStorageCell<T>) stack.getItem();
+		var channel = item.getChannel();
 
 		// make sure the storage cell is empty...
 		var cellInv = AEApi.instance()
@@ -86,8 +86,8 @@ public final class DisassembleRecipe extends net.minecraftforge.registries.IForg
 				var maybeCellOutput = this.getCellOutput(stackInSlot);
 				if (maybeCellOutput.isPresent()) {
 					var storageCellStack = maybeCellOutput.get();
-					var storageList = getStorageList(storageCellStack);
-					if (storageList.isEmpty()) {
+					var storageList = getStorageList(stackInSlot);
+					if (!storageList.isEmpty()) {
 						return MISMATCHED_STACK;
 					}
 
