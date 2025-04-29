@@ -114,7 +114,14 @@ public abstract class MixinPushPattern {
 
 			// Pop one inputTunnel and feed it instead, supplying the output inputTunnel's facing value.
 			// If the list is empty, dereference it to restore AE2 behavior.
-			var tunnel = this.nae2$tunnelsToVisit.removeFirst();
+			var tunnel = this.nae2$tunnelsToVisit.isEmpty() ? null : this.nae2$tunnelsToVisit.removeFirst();
+			if (tunnel == null) {
+				this.visitedFaces.remove(this.nae2$originalFacing);
+				this.nae2$tunnelsToVisit = null;
+				this.nae2$inputTunnel = null;
+				this.nae2$originalFacing = null;
+				return null;
+			}
 			var input = this.nae2$inputTunnel;
 			if (this.nae2$tunnelsToVisit.isEmpty()) {
 				this.visitedFaces.remove(this.nae2$originalFacing);

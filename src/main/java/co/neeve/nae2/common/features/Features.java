@@ -33,15 +33,10 @@ public enum Features implements IFeature {
 		}
 	},
 	DENSE_CELLS(EnumSet.allOf(DenseCellFeatures.class)),
-	DENSE_GAS_CELLS() {
-		@Override
-		public boolean isEnabled() {
-			return Platform.isModLoaded("mekeng") && super.isEnabled();
-		}
-	},
 	DENSE_CPU_COPROCESSORS("dense.coprocessor"),
 	DENSE_FLUID_CELLS(),
-	EXPOSER();
+	EXPOSER(),
+	PORTABLE_DENSE_CELLS,;
 
 	private String[] mixins;
 	private EnumSet<? extends ISubFeature> subFeatures = null;

@@ -108,3 +108,13 @@ nae2.jei.cellview.keybind=Press %s to view contents
 nae2.exposer.tooltip=Exposes the network contents as capabilities. The cooler ME Interface.
 nae2.exposer.noneregistered=No handlers registered.
 nae2.exposer.registered=Registered handlers:
+
+item.nae2.improved_portable_cell.name=§61MB§r Portable Cell
+item.nae2.advanced_portable_cell.name=§e4MB§r Portable Cell
+item.nae2.perfect_portable_cell.name=§a16MB§r Portable Cell
+
+tooltip.nae2.auto_pickup.name=Auto pickup is
+tooltip.nae2.auto_pickup_how_to_enable.name=Press SHIFT+RMB to toggle auto pickup.
+tooltip.nae2.auto_pickup_tip.name=Configuration made in the Cell Workbench will be used as filter.
+tooltip.nae2.enabled_lowercase.name=enabled
+tooltip.nae2.disabled_lowercase.name=disabled

@@ -16,7 +16,6 @@ import appeng.util.item.AEItemStack;
 import co.neeve.nae2.Tags;
 import com.github.bsideup.jabel.Desugar;
 import com.google.common.collect.ImmutableList;
-import com.mekeng.github.common.me.storage.IGasStorageChannel;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import mezz.jei.Internal;
@@ -82,8 +81,6 @@ public class JEICellCategory implements IRecipeCategory<SingleStackRecipe>, IRec
 		if (storageChannel instanceof IItemStorageChannel) {
 			return "items";
 		} else if (storageChannel instanceof IFluidStorageChannel) {
-			return "buckets";
-		} else if (Platform.isModLoaded("mekeng") && storageChannel instanceof IGasStorageChannel) {
 			return "buckets";
 		} else {
 			return "units";
@@ -217,13 +214,7 @@ public class JEICellCategory implements IRecipeCategory<SingleStackRecipe>, IRec
 	}
 
 	private int getTransferFactor() {
-		final int transferFactor;
-		if (Platform.isModLoaded("mekeng") && this.cellInfo.channel instanceof IGasStorageChannel) {
-			transferFactor = 1000;
-		} else {
-			transferFactor = this.cellInfo.channel().transferFactor();
-		}
-		return transferFactor;
+		return this.cellInfo.channel().transferFactor();
 	}
 
 	@Override

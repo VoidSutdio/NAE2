@@ -279,20 +279,22 @@ public class PatternMultiToolPacket implements INAEMessage {
 	// Modifies the count of each tag in the list based on the operation and factor
 	private void modifyTagList(NBTTagList tagList, int factor, Operation operation, String countTag) {
 		for (var tag : tagList) {
-			var ntc = (NBTTagCompound) tag;
-			var count = ntc.getInteger(countTag);
+			if (!(tag instanceof NBTTagCompound ntc)) {
+				continue;
+			}
+			int count = ntc.getInteger(countTag);
 			if (count == 0) {
 				continue;
 			}
 
 			switch (operation) {
 				case ADD -> {
-					if (count < Integer.MAX_VALUE) {
+					if (count <= Integer.MAX_VALUE - factor) {
 						ntc.setInteger(countTag, count + factor);
 					}
 				}
 				case SUBTRACT -> {
-					if (count > 1) {
+					if (count > factor) {
 						ntc.setInteger(countTag, count - factor);
 					}
 				}
@@ -302,13 +304,14 @@ public class PatternMultiToolPacket implements INAEMessage {
 					}
 				}
 				case DIVIDE -> {
-					if (count >= factor) {
+					if (factor != 0 && count >= factor) {
 						ntc.setInteger(countTag, Math.max(1, count / factor));
 					}
 				}
 			}
+			count = ntc.getInteger(countTag);
 			if (count > 64) {
-				ntc.setInteger("stackSize", ntc.getInteger(countTag));
+				ntc.setInteger("stackSize", count);
 			} else {
 				ntc.removeTag("stackSize");
 			}

@@ -5,6 +5,7 @@ import appeng.api.config.Upgrades;
 import appeng.api.definitions.IItemDefinition;
 import appeng.bootstrap.components.IPostInitComponent;
 import appeng.bootstrap.components.IRecipeRegistrationComponent;
+import appeng.core.AEConfig;
 import appeng.core.features.ItemDefinition;
 import co.neeve.nae2.Tags;
 import co.neeve.nae2.client.gui.PatternMultiToolButtonHandler;
@@ -12,18 +13,16 @@ import co.neeve.nae2.common.features.Features;
 import co.neeve.nae2.common.features.subfeatures.VoidCellFeatures;
 import co.neeve.nae2.common.items.VirtualPattern;
 import co.neeve.nae2.common.items.cells.DenseFluidCell;
-import co.neeve.nae2.common.items.cells.DenseGasCell;
 import co.neeve.nae2.common.items.cells.DenseItemCell;
+import co.neeve.nae2.common.items.cells.ImprovedPortableCell;
 import co.neeve.nae2.common.items.cells.handlers.VoidCellHandler;
 import co.neeve.nae2.common.items.cells.vc.VoidFluidCell;
-import co.neeve.nae2.common.items.cells.vc.VoidGasCell;
 import co.neeve.nae2.common.items.cells.vc.VoidItemCell;
 import co.neeve.nae2.common.items.patternmultitool.ToolPatternMultiTool;
 import co.neeve.nae2.common.recipes.handlers.VoidConversionRecipe;
 import co.neeve.nae2.common.registration.registry.Registry;
 import co.neeve.nae2.common.registration.registry.interfaces.Definitions;
 import co.neeve.nae2.common.registration.registry.rendering.NoItemRendering;
-import com.mekeng.github.common.ItemAndBlocks;
 import it.unimi.dsi.fastutil.objects.Object2ObjectArrayMap;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import net.minecraft.item.ItemStack;
@@ -43,7 +42,6 @@ public class Items implements Definitions<IItemDefinition> {
 
 	private final IItemDefinition storageCellVoid;
 	private final IItemDefinition fluidStorageCellVoid;
-	private final IItemDefinition gasStorageCellVoid;
 	private final IItemDefinition storageCell256K;
 	private final IItemDefinition storageCell1024K;
 	private final IItemDefinition storageCell4096K;
@@ -52,11 +50,11 @@ public class Items implements Definitions<IItemDefinition> {
 	private final IItemDefinition storageCellFluid1024K;
 	private final IItemDefinition storageCellFluid4096K;
 	private final IItemDefinition storageCellFluid16384K;
-	private final IItemDefinition storageCellGas256K;
-	private final IItemDefinition storageCellGas1024K;
-	private final IItemDefinition storageCellGas4096K;
-	private final IItemDefinition storageCellGas16384K;
 	private final IItemDefinition virtualPattern;
+
+	private final IItemDefinition improvedPortableCell;
+	private final IItemDefinition advancedPortableCell;
+	private final IItemDefinition perfectPortableCell;
 
 	public Items(Registry registry) {
 		this.virtualPattern = this.registerById(registry.item("virtual_pattern", VirtualPattern::new)
@@ -86,15 +84,9 @@ public class Items implements Definitions<IItemDefinition> {
 				.features(Features.VOID_CELLS)
 				.build());
 
-		this.gasStorageCellVoid = this.registerById(
-			registry.item("gas_storage_cell_void", VoidGasCell::new)
-				.features(Features.VOID_CELLS, Features.DENSE_GAS_CELLS)
-				.build());
-
 		var voidCells = new Object2ObjectArrayMap<String, IItemDefinition>();
 		if (this.storageCellVoid.isEnabled()) voidCells.put("item", this.storageCellVoid);
 		if (this.fluidStorageCellVoid.isEnabled()) voidCells.put("fluid", this.fluidStorageCellVoid);
-		if (this.gasStorageCellVoid.isEnabled()) voidCells.put("gas", this.gasStorageCellVoid);
 
 		registry.addBootstrapComponent((IPostInitComponent) r -> {
 			if (!voidCells.isEmpty()) {
@@ -168,29 +160,22 @@ public class Items implements Definitions<IItemDefinition> {
 			.features(Features.DENSE_FLUID_CELLS)
 			.build());
 
-		this.storageCellGas256K = this.registerById(registry.item("storage_cell_gas_256k", () ->
-				new DenseGasCell(Materials.MaterialType.CELL_GAS_PART_256K,
-					(int) Math.pow(2, 8)))
-			.features(Features.DENSE_GAS_CELLS)
-			.build());
+		this.improvedPortableCell = this.registerById(registry.item("improved_portable_cell", () -> new ImprovedPortableCell(AEConfig.instance().getPortableCellBattery() * 4, 1024 * 1024, 1, 2D))
+				.features(Features.PORTABLE_DENSE_CELLS)
+				.build());
+		this.advancedPortableCell = this.registerById(registry.item("advanced_portable_cell", () -> new ImprovedPortableCell(AEConfig.instance().getPortableCellBattery() * 8, 4096 * 1024, 1, 8D))
+				.features(Features.PORTABLE_DENSE_CELLS)
+				.build());
+		this.perfectPortableCell = this.registerById(registry.item("perfect_portable_cell", () -> new ImprovedPortableCell(AEConfig.instance().getPortableCellBattery() * 24, 16384 * 1024, 1, 16D))
+				.features(Features.PORTABLE_DENSE_CELLS)
+				.build());
 
-		this.storageCellGas1024K = this.registerById(registry.item("storage_cell_gas_1024k", () ->
-				new DenseGasCell(Materials.MaterialType.CELL_GAS_PART_1024K,
-					(int) Math.pow(2, 10)))
-			.features(Features.DENSE_GAS_CELLS)
-			.build());
-
-		this.storageCellGas4096K = this.registerById(registry.item("storage_cell_gas_4096k", () ->
-				new DenseGasCell(Materials.MaterialType.CELL_GAS_PART_4096K,
-					(int) Math.pow(2, 12)))
-			.features(Features.DENSE_GAS_CELLS)
-			.build());
-
-		this.storageCellGas16384K = this.registerById(registry.item("storage_cell_gas_16384k", () ->
-				new DenseGasCell(Materials.MaterialType.CELL_GAS_PART_16384K,
-					(int) Math.pow(2, 14)))
-			.features(Features.DENSE_GAS_CELLS)
-			.build());
+		Upgrades.INVERTER.registerItem(improvedPortableCell, 1);
+		Upgrades.FUZZY.registerItem(improvedPortableCell, 1);
+		Upgrades.INVERTER.registerItem(advancedPortableCell, 1);
+		Upgrades.FUZZY.registerItem(advancedPortableCell, 1);
+		Upgrades.INVERTER.registerItem(perfectPortableCell, 1);
+		Upgrades.FUZZY.registerItem(perfectPortableCell, 1);
 
 		registry.addBootstrapComponent((IPostInitComponent) r -> {
 			var items = AEApi.instance().definitions().items();
@@ -213,16 +198,6 @@ public class Items implements Definitions<IItemDefinition> {
 					this.storageCellFluid4096K,
 					this.storageCellFluid16384K,
 					this.fluidStorageCellVoid
-				});
-			}
-
-			if (Features.DENSE_GAS_CELLS.isEnabled()) {
-				mirrorCellUpgrades(new ItemStack(ItemAndBlocks.GAS_CELL_1k), new IItemDefinition[]{
-					this.storageCellGas256K,
-					this.storageCellGas1024K,
-					this.storageCellGas4096K,
-					this.storageCellGas16384K,
-					this.storageCellVoid
 				});
 			}
 		});
@@ -273,9 +248,6 @@ public class Items implements Definitions<IItemDefinition> {
 		return this.fluidStorageCellVoid;
 	}
 
-	public IItemDefinition gasStorageCellVoid() {
-		return this.gasStorageCellVoid;
-	}
 
 	public IItemDefinition virtualPattern() {
 		return this.virtualPattern;
@@ -313,19 +285,15 @@ public class Items implements Definitions<IItemDefinition> {
 		return this.storageCellFluid16384K;
 	}
 
-	public IItemDefinition storageCellGas256K() {
-		return this.storageCellGas256K;
+	public IItemDefinition improvedPortableCell() {
+		return this.improvedPortableCell;
 	}
 
-	public IItemDefinition storageCellGas1024K() {
-		return this.storageCellGas1024K;
+	public IItemDefinition advancedPortableCell() {
+		return this.advancedPortableCell;
 	}
 
-	public IItemDefinition storageCellGas4096K() {
-		return this.storageCellGas4096K;
-	}
-
-	public IItemDefinition storageCellGas16384K() {
-		return this.storageCellGas16384K;
+	public IItemDefinition perfectPortableCell() {
+		return this.perfectPortableCell;
 	}
 }
