@@ -12,6 +12,7 @@ import appeng.api.storage.data.IItemList;
 import appeng.items.contents.CellConfig;
 import appeng.util.Platform;
 import co.neeve.nae2.common.features.subfeatures.VoidCellFeatures;
+import com.mekeng.github.common.me.storage.IGasStorageChannel;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import org.jetbrains.annotations.Nullable;
@@ -174,7 +175,7 @@ public class VoidCellInventory<T extends IAEStack<T>> implements ICellInventoryH
 	public void addCondenserPowerFromInput(double power) {
 		if (!VoidCellFeatures.CONDENSER_POWER.isEnabled()) return;
 
-		this.setCondenserPower(this.getCondenserPower() + power / (double) this.getChannel().transferFactor());
+		this.setCondenserPower(this.getCondenserPower() + power / getTransferFactor());
 	}
 
 	public double getCondenserPower() {
@@ -199,5 +200,15 @@ public class VoidCellInventory<T extends IAEStack<T>> implements ICellInventoryH
 		if (this.saveProvider != null) {
 			this.saveProvider.saveChanges(null);
 		}
+	}
+
+	private double getTransferFactor() {
+		final double transferFactor;
+		if (Platform.isModLoaded("mekeng") && this.getChannel() instanceof IGasStorageChannel) {
+			transferFactor = 1000;
+		} else {
+			transferFactor = this.getChannel().transferFactor();
+		}
+		return transferFactor;
 	}
 }

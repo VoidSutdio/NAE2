@@ -10,18 +10,19 @@ item.nae2.pattern_multiplier.name=Мультиинструмент шаблон�
 # Cells
 item.nae2.storage_cell_void.name=МЭ Пустотная ячейка хранения
 item.nae2.fluid_storage_cell_void.name=МЭ Жидкостная пустотная ячейка хранения
+item.nae2.gas_storage_cell_void.name=МЭ Газовая пустотная ячейка хранения
 item.nae2.storage_cell_256k.name=§c256k§r МЭ Ячейка хранения
 item.nae2.storage_cell_1024k.name=§61024k§r МЭ Ячейка хранения
 item.nae2.storage_cell_4096k.name=§e4096k§r МЭ Ячейка хранения
 item.nae2.storage_cell_16384k.name=§a16384k§r МЭ Ячейка хранения
-item.nae2.storage_cell_65536k.name=§965536k§r МЭ Ячейка хранения
-item.nae2.storage_cell_262144k.name=§d262144k§r МЭ Ячейка хранения
 item.nae2.storage_cell_fluid_256k.name=§c256k§r МЭ Жидкостная ячейка хранения
 item.nae2.storage_cell_fluid_1024k.name=§61024k§r МЭ Жидкостная ячейка хранения
 item.nae2.storage_cell_fluid_4096k.name=§e4096k§r МЭ Жидкостная ячейка хранения
 item.nae2.storage_cell_fluid_16384k.name=§a16384k§r МЭ Жидкостная ячейка хранения
-item.nae2.storage_cell_fluid_65536k.name=§965536k§r МЭ Жидкостная ячейка хранения
-item.nae2.storage_cell_fluid_262144k.name=§d262144k§r МЭ Жидкостная ячейка хранения
+item.nae2.storage_cell_gas_256k.name=§c256k§r МЭ Газовая ячейка хранения
+item.nae2.storage_cell_gas_1024k.name=§61024k§r МЭ Газовая ячейка хранения
+item.nae2.storage_cell_gas_4096k.name=§e4096k§r МЭ Газовая ячейка хранения
+item.nae2.storage_cell_gas_16384k.name=§a16384k§r МЭ Газовая ячейка хранения
 
 # Materials
 item.nae2.material.cell_part_void.name=МЭ Пустотный компонент хранения
@@ -29,14 +30,14 @@ item.nae2.material.cell_part_256k.name=§c256k§r МЭ Компонент хра
 item.nae2.material.cell_part_1024k.name=§61024k§r МЭ Компонент хранения
 item.nae2.material.cell_part_4096k.name=§e4096k§r МЭ Компонент хранения
 item.nae2.material.cell_part_16384k.name=§a16384k§r МЭ Компонент хранения
-item.nae2.material.cell_part_65536k.name=§965536k§r МЭ Компонент хранения
-item.nae2.material.cell_part_262144k.name=§d262144k§r МЭ Компонент хранения
 item.nae2.material.cell_part_fluid_256k.name=§c256k§r МЭ Жидкостный компонент хранения
 item.nae2.material.cell_part_fluid_1024k.name=§61024k§r МЭ Жидкостный компонент хранения
 item.nae2.material.cell_part_fluid_4096k.name=§e4096k§r МЭ Жидкостный компонент хранения
 item.nae2.material.cell_part_fluid_16384k.name=§a16384k§r МЭ Жидкостный компонент хранения
-item.nae2.material.cell_part_fluid_65536k.name=§965536k§r МЭ Жидкостный компонент хранения
-item.nae2.material.cell_part_fluid_262144k.name=§d262144k§r МЭ Жидкостный компонент хранения
+item.nae2.material.cell_part_gas_256k.name=§c256k§r МЭ Газовый компонент хранения
+item.nae2.material.cell_part_gas_1024k.name=§61024k§r МЭ Газовый компонент хранения
+item.nae2.material.cell_part_gas_4096k.name=§e4096k§r МЭ Газовый компонент хранения
+item.nae2.material.cell_part_gas_16384k.name=§a16384k§r МЭ Газовый компонент хранения
 
 # Parts
 item.nae2.part.beam_former.name=МЭ Формирователь луча
@@ -46,8 +47,8 @@ item.nae2.part.exposer.name=МЭ Обличитель хранилища
 item.nae2.upgrade.hyper_acceleration.name=Карта гиперускорения
 item.nae2.upgrade.auto_complete.name=Карта авто-завершения задачи
 item.nae2.upgrade.auto_complete.desc=Автоматически завершает задачу крафта, не дожидаясь результатов.
-item.nae2.upgrade.gregtech_circuit.name=Programmed Circuit Card
-item.nae2.upgrade.gregtech_circuit.desc=Automatically sets Programmed Circuits in machines and buses.\nRequires a relevant Circuit in Encoded Pattern.\nDon't forget to enable Blocking Mode!\n\nI'm sorry, Seni.
+item.nae2.upgrade.gregtech_circuit.name=Карта конфигурационной схемы
+item.nae2.upgrade.gregtech_circuit.desc=Автоматически настраивает конфигурационные схемы в механизмах и люках\nТребуется указать соответствующую схему в закодированном шаблоне.\nНе забудьте включить режим блокировки!
 
 # Tiles
 tile.nae2.reconstruction_chamber.name=Камера реконструкции
