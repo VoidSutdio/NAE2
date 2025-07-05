@@ -3,6 +3,7 @@ package co.neeve.nae2.common.tiles;
 import appeng.tile.crafting.TileCraftingStorageTile;
 import co.neeve.nae2.common.blocks.BlockDenseCraftingUnit;
 import co.neeve.nae2.common.interfaces.IDenseCoProcessor;
+import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 
 import javax.annotation.Nullable;
@@ -11,8 +12,11 @@ public class TileDenseCraftingUnit extends TileCraftingStorageTile implements ID
 	@Override
 	protected ItemStack getItemFromTile(Object obj) {
 		if (this.world != null && !this.notLoaded() && !this.isInvalid()) {
-			var unit = (BlockDenseCraftingUnit) this.world.getBlockState(this.pos).getBlock();
-			return unit.getType().getBlock().maybeStack(1).orElse(ItemStack.EMPTY);
+			Block block = this.world.getBlockState(this.pos).getBlock();
+			if (!(block instanceof BlockDenseCraftingUnit unit)) {
+				return ItemStack.EMPTY;
+			}
+            return unit.getType().getBlock().maybeStack(1).orElse(ItemStack.EMPTY);
 		} else {
 			return ItemStack.EMPTY;
 		}
@@ -42,7 +46,11 @@ public class TileDenseCraftingUnit extends TileCraftingStorageTile implements ID
 
 	public @Nullable BlockDenseCraftingUnit getBlock() {
 		if (this.world != null && !this.notLoaded() && !this.isInvalid()) {
-			return (BlockDenseCraftingUnit) this.world.getBlockState(this.pos).getBlock();
+			Block block = this.world.getBlockState(this.pos).getBlock();
+			if (!(block instanceof BlockDenseCraftingUnit)) {
+				return null;
+			}
+			return (BlockDenseCraftingUnit) block;
 		} else {
 			return null;
 		}
