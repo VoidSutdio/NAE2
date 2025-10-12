@@ -2,10 +2,13 @@ package co.neeve.nae2.common.items.cells;
 
 import appeng.api.AEApi;
 import appeng.api.config.Actionable;
+import appeng.api.storage.ICellInventory;
 import appeng.api.storage.ICellInventoryHandler;
 import appeng.api.storage.channels.IItemStorageChannel;
 import appeng.api.storage.data.IAEItemStack;
+import appeng.api.storage.data.IItemList;
 import appeng.core.Api;
+import appeng.me.helpers.PlayerSource;
 import appeng.util.item.AEItemStack;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
@@ -44,7 +47,7 @@ public class ImprovedPortableCell extends DensePortableCell {
         }
 
         ICellInventoryHandler<IAEItemStack> cellHandler = getCellHandler(cellStack);
-        if (cellHandler == null) {
+        if (cellHandler == null || cellHandler.getCellInv() == null) {
             return false;
         }
 
@@ -58,12 +61,23 @@ public class ImprovedPortableCell extends DensePortableCell {
             return false;
         }
 
-        IAEItemStack overflow = cellHandler.injectItems(aeItem, Actionable.SIMULATE, null);
+        ICellInventory<IAEItemStack> inv = cellHandler.getCellInv();
+        if (!containsType(inv, aeItem)) {
+            return false;
+        }
+
+        PlayerSource source = new PlayerSource(event.getEntityPlayer(), null);
+        IAEItemStack overflow = inv.injectItems(aeItem, Actionable.SIMULATE, source);
         if (overflow != null) {
             return false;
         }
 
-        cellHandler.injectItems(aeItem, Actionable.MODULATE, null);
+        try {
+            inv.injectItems(aeItem, Actionable.MODULATE, source);
+        } catch (Throwable t) {
+            return false;
+        }
+
         playPickupSound(event.getEntityPlayer());
         pickedItem.setCount(0);
         return true;
@@ -75,12 +89,13 @@ public class ImprovedPortableCell extends DensePortableCell {
         }
 
         ICellInventoryHandler<IAEItemStack> cellHandler = getCellHandler(cellStack);
-        if (cellHandler == null) {
+        if (cellHandler == null || cellHandler.getCellInv() == null) {
             return;
         }
 
         EntityPlayer player = event.getHarvester();
         List<ItemStack> drops = event.getDrops();
+        ICellInventory<IAEItemStack> inv = cellHandler.getCellInv();
 
         for (int i = 0; i < drops.size(); i++) {
             ItemStack drop = drops.get(i);
@@ -93,9 +108,18 @@ public class ImprovedPortableCell extends DensePortableCell {
                 continue;
             }
 
-            IAEItemStack overflow = cellHandler.injectItems(aeDrop, Actionable.SIMULATE, null);
+            if (!containsType(inv, aeDrop)) {
+                continue;
+            }
+
+            PlayerSource source = new PlayerSource(player, null);
+            IAEItemStack overflow = inv.injectItems(aeDrop, Actionable.SIMULATE, source);
             if (overflow == null) {
-                cellHandler.injectItems(aeDrop, Actionable.MODULATE, null);
+                try {
+                    inv.injectItems(aeDrop, Actionable.MODULATE, source);
+                } catch (Throwable t) {
+                    continue;
+                }
                 playPickupSound(player);
                 drops.remove(i--);
             }
@@ -115,6 +139,27 @@ public class ImprovedPortableCell extends DensePortableCell {
                     .getCellInventory(cellStack, null, getChannel());
         } catch (Exception e) {
             return null;
+        }
+    }
+
+    private boolean containsType(@NotNull ICellInventory<IAEItemStack> inv, @NotNull IAEItemStack probe) {
+        try {
+            IItemList<IAEItemStack> list = AEApi.instance()
+                    .storage()
+                    .getStorageChannel(IItemStorageChannel.class)
+                    .createList();
+            inv.getAvailableItems(list);
+            if (list.findPrecise(probe) != null) {
+                return true;
+            }
+            for (IAEItemStack s : list) {
+                if (s != null && s.isSameType(probe)) {
+                    return true;
+                }
+            }
+            return false;
+        } catch (Throwable t) {
+            return false;
         }
     }
 

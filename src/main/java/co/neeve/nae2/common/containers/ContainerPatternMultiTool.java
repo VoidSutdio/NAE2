@@ -29,6 +29,7 @@ import co.neeve.nae2.common.slots.SlotPatternMultiTool;
 import co.neeve.nae2.common.slots.SlotPatternMultiToolUpgrade;
 import com.glodblock.github.common.item.ItemFluidDrop;
 import com.glodblock.github.common.item.ItemFluidEncodedPattern;
+import com.glodblock.github.common.item.fake.FakeItemRegister;
 import com.google.common.collect.Lists;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -40,6 +41,7 @@ import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
@@ -262,7 +264,7 @@ public class ContainerPatternMultiTool extends AEBaseContainer implements IAEApp
 				}
 			}
 
-			if (dropList.size() > 0) {
+			if (!dropList.isEmpty()) {
 				var tileEntity = this.iface.getTileEntity();
 				var world = tileEntity.getWorld();
 				var blockPos = tileEntity.getPos();
@@ -280,7 +282,7 @@ public class ContainerPatternMultiTool extends AEBaseContainer implements IAEApp
 
 			var itemA = srInv.getStackInSlot(0);
 			var itemB = srInv.getStackInSlot(1);
-			if (itemA.isEmpty() || itemB.isEmpty()) return;
+			if (itemA.isEmpty()) return;
 
 			var itemBData = ItemStackHelper.stackToNBT(itemB);
 			var crafting = new InventoryCrafting(new ContainerNull(), 3, 3);
@@ -308,8 +310,7 @@ public class ContainerPatternMultiTool extends AEBaseContainer implements IAEApp
 				if (!isCrafting) lists.add(tagOut);
 
 				var fluidStackIn = FluidUtil.getFluidContained(itemA);
-				var fluidStackOut = FluidUtil.getFluidContained(itemB);
-				var fluidReplacement = ae2fc && fluidStackIn != null && fluidStackOut != null;
+				var fluidReplacement = ae2fc && fluidStackIn != null;
 
 				for (var list : lists) {
 					var idx = 0;
@@ -327,7 +328,7 @@ public class ContainerPatternMultiTool extends AEBaseContainer implements IAEApp
 								list.set(idx, data);
 							} else continue;
 						} else if (fluidReplacement && stack.getItem() instanceof ItemFluidDrop) {
-							var fluidStack = ItemFluidDrop.getFluidStack(stack);
+							FluidStack fluidStack = FakeItemRegister.getStack(stack);
 
 							// This should never be a crafting pattern.
 							if (fluidStackIn.isFluidEqual(fluidStack)) {

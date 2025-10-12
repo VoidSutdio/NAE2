@@ -16,6 +16,8 @@ import co.neeve.nae2.common.interfaces.IPatternMultiToolHost;
 import co.neeve.nae2.common.net.INAEMessage;
 import com.glodblock.github.common.item.ItemFluidDrop;
 import com.glodblock.github.common.item.ItemFluidEncodedPattern;
+import com.glodblock.github.common.item.fake.FakeFluids;
+import com.glodblock.github.common.item.fake.FakeItemRegister;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.InventoryCrafting;
@@ -23,6 +25,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
@@ -140,7 +143,7 @@ public class PatternMultiToolPacket implements INAEMessage {
 
 		var itemA = srInv.getStackInSlot(0);
 		var itemB = srInv.getStackInSlot(1);
-		if (itemA.isEmpty() || itemB.isEmpty()) return;
+		if (itemA.isEmpty()) return;
 
 		var itemBData = ItemStackHelper.stackToNBT(itemB);
 		var crafting = new InventoryCrafting(new ContainerNull(), 3, 3);
@@ -162,7 +165,7 @@ public class PatternMultiToolPacket implements INAEMessage {
 
 			var fluidStackIn = FluidUtil.getFluidContained(itemA);
 			var fluidStackOut = FluidUtil.getFluidContained(itemB);
-			var fluidReplacement = ae2fc && fluidStackIn != null && fluidStackOut != null;
+			var fluidReplacement = ae2fc && fluidStackIn != null;
 
 			var lists = new NBTTagList[]{ tagIn, tagOut };
 			for (var list : lists) {
@@ -171,26 +174,40 @@ public class PatternMultiToolPacket implements INAEMessage {
 					var compound = (NBTTagCompound) tag;
 					var stack = ItemStackHelper.stackFromNBT(compound);
 					if (itemA.isItemEqual(stack)) {
+						if (itemB.isEmpty()) {
+							list.removeTag(idx);
+							continue;
+						}
+
 						var count = compound.getTag(countTag).copy();
 						var data = itemBData.copy();
 						data.setTag(countTag, count);
 						list.set(idx, data);
+						idx--;
+
 					} else if (fluidReplacement && stack.getItem() instanceof ItemFluidDrop) {
 						// ¯\_(ツ)_/¯
-						var fluidStack = ItemFluidDrop.getFluidStack(stack);
+						FluidStack fluidStack = FakeItemRegister.getStack(stack);
 						if (fluidStackIn.isFluidEqual(fluidStack)) {
-							var ifd = ItemFluidDrop.newStack(fluidStackOut);
+							if (itemB.isEmpty()) {
+								list.removeTag(idx);
+								continue;
+							}
+
+							var ifd = FakeFluids.packFluid2Drops(fluidStackOut);
 							NBTTagCompound ifdCompound;
 							if (ifd == null || (ifdCompound = ifd.getTagCompound()) == null) continue;
 
 							var data = compound.copy();
 							data.setTag("tag", ifdCompound);
 							list.set(idx, data);
+
 						}
 					}
 					idx++;
 				}
 			}
+
 
 			// Validate
 			if (nbt.getBoolean("crafting")) {
