@@ -51,6 +51,7 @@ item.nae2.upgrade.gregtech_circuit.name=Programmed Circuit Card
 item.nae2.upgrade.gregtech_circuit.desc=Automatically sets Programmed Circuits in machines and buses.\nRequires a relevant Circuit in Encoded Pattern.\nDon't forget to enable Blocking Mode!\n\nI'm sorry, Seni.
 
 # Tiles
+tile.nae2.dense_beam_former.name=ME Dense Beam Former
 tile.nae2.reconstruction_chamber.name=Reconstruction Chamber
 tile.nae2.reconstruction_chamber.desc=Makes Atomic Recontructors from Actually Additions treat items inside as if they were on the ground for conversion purposes. No more item drops!\n\nAuto-pushes products into nearby inventories and ME Interfaces.
 tile.nae2.coprocessor_4x.name=§b4x§r Crafting Co-Processing Unit

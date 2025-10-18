@@ -39,6 +39,7 @@ item.nae2.upgrade.auto_complete.name=ジョブ自動補完カード
 item.nae2.upgrade.auto_complete.desc=出力を待たずに自動的にジョブを完了させる。
 
 # Tiles
+tile.nae2.dense_beam_former.name=MEデンスビームフォーマー
 tile.nae2.reconstruction_chamber.name=原子再構成機
 tile.nae2.reconstruction_chamber.desc=ActuallyAditionsの原子再構成にて、アイテムを地面に置かなくてもクラフトを行う。もうアイテムを落とすことはない!\n\n近くのインベントリやMEインターフェイスに完成品を自動格納してくれます。
 tile.nae2.coprocessor_4x.name=§b4x§r クラフティング並列処理ユニット

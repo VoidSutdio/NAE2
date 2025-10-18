@@ -19,4 +19,8 @@ public interface IBeamFormer {
 	boolean shouldRenderBeam();
 
 	BlockPos getPos();
+
+	default double getBeamThicknessMultiplier() {
+		return 1.0;
+	}
 }

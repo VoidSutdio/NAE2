@@ -39,6 +39,7 @@ item.nae2.upgrade.auto_complete.name=工作自动完成卡
 item.nae2.upgrade.auto_complete.desc=自动完成作业，无需等待输出。
 
 # Tiles
+tile.nae2.dense_beam_former.name=ME致密光束成型器
 tile.nae2.reconstruction_chamber.name=原子再构室
 tile.nae2.reconstruction_chamber.desc=实用拓展模组的原子再构机可对其中的物品进行转换。不再需要处理掉落物了！\n\n成品将自动输出至相邻的物品存储空间或ME接口中。
 tile.nae2.coprocessor_4x.name=§b4x§r并行处理单元

@@ -42,13 +42,14 @@ public class ModernBeamFormerRenderer implements IBeamFormerRenderer {
 			var rgb = getColor(partBeamFormer);
 			final var beamLength = partBeamFormer.getBeamLength();
 			final var beamLengthHalf = (beamLength + 1) / 2d;
+			final var thickness = partBeamFormer.getBeamThicknessMultiplier();
 
 			if (partBeamFormer.shouldRenderBeam()) {
 				drawCube(bufferBuilder,
 					0.5d + metadata.dx() * beamLengthHalf + x - ctx.cameraX(),
 					0.5d + metadata.dy() * beamLengthHalf + y - ctx.cameraY(),
 					0.5d + metadata.dz() * beamLengthHalf + z - ctx.cameraZ(),
-					beamLength, metadata, rgb);
+					beamLength, metadata, rgb, thickness);
 			}
 		};
 	}

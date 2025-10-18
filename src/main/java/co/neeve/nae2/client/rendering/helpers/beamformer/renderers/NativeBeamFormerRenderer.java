@@ -37,10 +37,12 @@ public class NativeBeamFormerRenderer implements IBeamFormerRenderer {
 		GlStateManager.rotate(metadata.pitch(), 1.0F, 0.0F, 0.0F);
 		GlStateManager.translate(-0.5, 0.35, -0.5);
 
+		double thicknessMultiplier = partBeamFormer.getBeamThicknessMultiplier();
+
 		BeaconRenderHelper.renderBeamSegment(0, 0, 0, partialTicks, 1,
 			(double) partBeamFormer.getWorld().getTotalWorldTime(), 0,
-			partBeamFormer.getBeamLength() + 0.3d
-			, rgb, 0.075 * 1.6, 0.075 * 2);
+			partBeamFormer.getBeamLength() + 0.3d,
+			rgb, 0.075 * 1.6 * thicknessMultiplier, 0.075 * 2 * thicknessMultiplier);
 
 		GlStateManager.popMatrix();
 	}

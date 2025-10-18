@@ -10,8 +10,10 @@ import appeng.bootstrap.components.IPreInitComponent;
 import appeng.bootstrap.definitions.TileEntityDefinition;
 import appeng.util.Platform;
 import co.neeve.nae2.NAE2;
+import co.neeve.nae2.client.rendering.tesr.TESRDenseBeamFormer;
 import co.neeve.nae2.client.rendering.tesr.TESRReconstructionChamber;
 import co.neeve.nae2.common.blocks.BlockDenseCraftingUnit;
+import co.neeve.nae2.common.blocks.BlockDenseBeamFormer;
 import co.neeve.nae2.common.blocks.BlockExposer;
 import co.neeve.nae2.common.blocks.BlockReconstructionChamber;
 import co.neeve.nae2.common.features.Features;
@@ -22,6 +24,7 @@ import co.neeve.nae2.common.integration.jei.NAEJEIPlugin;
 import co.neeve.nae2.common.registration.registry.Registry;
 import co.neeve.nae2.common.registration.registry.rendering.DenseCraftingCubeRendering;
 import co.neeve.nae2.common.tiles.TileDenseCraftingUnit;
+import co.neeve.nae2.common.tiles.TileDenseBeamFormer;
 import co.neeve.nae2.common.tiles.TileExposer;
 import co.neeve.nae2.common.tiles.TileReconstructionChamber;
 import de.ellpeck.actuallyadditions.mod.jei.reconstructor.ReconstructorRecipeCategory;
@@ -41,6 +44,7 @@ public class Blocks {
 	private final ITileDefinition coprocessor16x;
 	private final ITileDefinition coprocessor64x;
 	private final ITileDefinition exposer;
+	private final ITileDefinition denseBeamFormer;
 
 	public Blocks(Registry registry) {
 		this.reconstructionChamber = registry.block("reconstruction_chamber",
@@ -149,6 +153,18 @@ public class Blocks {
 					FluidExposerHandler.class);
 			})
 			.build();
+
+		this.denseBeamFormer = registry.block("dense_beam_former", BlockDenseBeamFormer::new)
+			.tileEntity(new TileEntityDefinition(TileDenseBeamFormer.class))
+			.rendering(new BlockRenderingCustomizer() {
+				@Override
+				@SideOnly(Side.CLIENT)
+				public void customize(IBlockRendering iBlockRendering, IItemRendering iItemRendering) {
+					iBlockRendering.tesr(new TESRDenseBeamFormer());
+				}
+			})
+			.features(Features.BEAM_FORMERS)
+			.build();
 	}
 
 	public ITileDefinition reconstructionChamber() {
@@ -185,5 +201,9 @@ public class Blocks {
 
 	public ITileDefinition exposer() {
 		return this.exposer;
+	}
+
+	public ITileDefinition denseBeamFormer() {
+		return this.denseBeamFormer;
 	}
 }
