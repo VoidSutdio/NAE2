@@ -80,10 +80,8 @@ public class BlockDenseBeamFormer extends AEBaseTileBlock implements ICustomColl
 
         TileDenseBeamFormer te = this.getTileEntity(worldIn, pos);
         if (te != null) {
-            if (te.isBeaming()) {
-                teState = State.BEAMING;
-            } else if (te.isActive()) {
-                teState = State.HAS_CHANNEL;
+            if (te.isActive()) {
+                teState = te.isBeaming() ? State.BEAMING : State.HAS_CHANNEL;
             } else if (te.isPowered()) {
                 teState = State.ON;
             }
@@ -249,11 +247,8 @@ public class BlockDenseBeamFormer extends AEBaseTileBlock implements ICustomColl
 
     @Override
     public int getLightValue(@NotNull IBlockState state, @NotNull IBlockAccess world, @NotNull BlockPos pos) {
-        var te = this.getTileEntity(world, pos);
-        if (te instanceof TileDenseBeamFormer beamFormer) {
-            if (beamFormer.shouldRenderBeam() || beamFormer.isBeaming()) {
-                return 15;
-            }
+        if (this.getTileEntity(world, pos) instanceof TileDenseBeamFormer beamFormer) {
+            return beamFormer.getLightValue();
         }
         return 0;
     }

@@ -1,6 +1,8 @@
 package co.neeve.nae2.common.registration.definitions;
 
 import appeng.api.definitions.ITileDefinition;
+import appeng.block.AEBaseItemBlock;
+import appeng.block.AEBaseTileBlock;
 import appeng.block.crafting.ItemCraftingStorage;
 import appeng.bootstrap.BlockRenderingCustomizer;
 import appeng.bootstrap.IBlockRendering;
@@ -8,6 +10,7 @@ import appeng.bootstrap.IItemRendering;
 import appeng.bootstrap.components.IPostInitComponent;
 import appeng.bootstrap.components.IPreInitComponent;
 import appeng.bootstrap.definitions.TileEntityDefinition;
+import appeng.tile.AEBaseTile;
 import appeng.util.Platform;
 import co.neeve.nae2.NAE2;
 import co.neeve.nae2.client.rendering.tesr.TESRDenseBeamFormer;
@@ -28,6 +31,12 @@ import co.neeve.nae2.common.tiles.TileDenseBeamFormer;
 import co.neeve.nae2.common.tiles.TileExposer;
 import co.neeve.nae2.common.tiles.TileReconstructionChamber;
 import de.ellpeck.actuallyadditions.mod.jei.reconstructor.ReconstructorRecipeCategory;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -163,6 +172,26 @@ public class Blocks {
 					iBlockRendering.tesr(new TESRDenseBeamFormer());
 				}
 			})
+            .item(block -> new AEBaseItemBlock(block) {
+                @Override
+                public boolean placeBlockAt(ItemStack stack, EntityPlayer player, World w, BlockPos pos,
+                                            EnumFacing side, float hitX, float hitY, float hitZ, IBlockState newState) {
+                    if (super.placeBlockAt(stack, player, w, pos, side, hitX, hitY, hitZ, newState)) {
+                        final AEBaseTile tile = ((AEBaseTileBlock) this.block).getTileEntity(w, pos);
+
+                        if (tile == null) {
+                            return true;
+                        }
+
+                        EnumFacing up = side == EnumFacing.UP || side == EnumFacing.DOWN ? EnumFacing.SOUTH : EnumFacing.UP;
+                        tile.setOrientation(side, up);
+                        tile.onPlacement(stack, player, side);
+
+                        return true;
+                    }
+                    return false;
+                }
+            })
 			.features(Features.BEAM_FORMERS)
 			.build();
 	}

@@ -8,6 +8,7 @@ import appeng.api.networking.GridFlags;
 import appeng.api.networking.IGridConnection;
 import appeng.api.networking.IGridNode;
 import appeng.api.networking.events.MENetworkBootingStatusChange;
+import appeng.api.networking.events.MENetworkChannelsChanged;
 import appeng.api.networking.events.MENetworkEventSubscribe;
 import appeng.api.networking.events.MENetworkPowerStatusChange;
 import appeng.api.networking.ticking.IGridTickable;
@@ -54,6 +55,7 @@ public class TileDenseBeamFormer extends AENetworkTile implements IGridTickable,
     private IGridConnection connection = null;
     private Long2ObjectLinkedOpenHashMap<BlockPos> listenerLinkedList = null;
     private boolean hideBeam = false;
+    private int oldLightValue = -1;
 
     @SideOnly(Side.CLIENT)
     private boolean paired = false;
@@ -171,7 +173,7 @@ public class TileDenseBeamFormer extends AENetworkTile implements IGridTickable,
 
     @Override
     public boolean isPowered() {
-        if (!this.world.isRemote) {
+        if (!Platform.isClient()) {
             try {
                 return this.getProxy().getEnergy().isNetworkPowered();
             } catch (GridAccessException ignored) {
@@ -183,10 +185,10 @@ public class TileDenseBeamFormer extends AENetworkTile implements IGridTickable,
 
     @Override
     public boolean isActive() {
-        if (!this.world.isRemote) {
+        if (!Platform.isClient()) {
             return this.getProxy().isActive();
         }
-        return (this.clientFlags & ACTIVE_FLAG) == ACTIVE_FLAG;
+        return this.isPowered() && (this.clientFlags & ACTIVE_FLAG) == ACTIVE_FLAG;
     }
 
     public boolean isBeaming() {
@@ -194,13 +196,20 @@ public class TileDenseBeamFormer extends AENetworkTile implements IGridTickable,
     }
 
     @MENetworkEventSubscribe
+    public void chanRender(MENetworkChannelsChanged c) {
+        this.markForUpdate();
+    }
+
+    @MENetworkEventSubscribe
     public void onPowerChange(MENetworkPowerStatusChange e) throws GridAccessException {
+        this.markForUpdate();
         if (!this.getProxy().isReady()) return;
         this.getProxy().getTick().alertDevice(this.getProxy().getNode());
     }
 
     @MENetworkEventSubscribe
     public void onBootingChange(MENetworkBootingStatusChange e) throws GridAccessException {
+        this.markForUpdate();
         if (!this.getProxy().isReady()) return;
         this.getProxy().getTick().alertDevice(this.getProxy().getNode());
     }
@@ -394,18 +403,35 @@ public class TileDenseBeamFormer extends AENetworkTile implements IGridTickable,
             } else if (isValid && this.connection == null) {
                 this.getProxy().getTick().alertDevice(this.getProxy().getNode());
             }
-        } catch (GridAccessException ignored) {}
+        } catch (GridAccessException ignored) {
+        }
     }
 
+    public int getLightValue() {
+        return !this.hideBeam
+                && ((Platform.isClient() && this.paired) || this.beamLength != 0 || this.otherBeamFormer != null)
+                && (this.isActive() && this.isPowered()) ? 15 : 0;
+    }
+
+    @Override
+    public void markForUpdate() {
+        if (this.world != null) {
+            int newLightValue = this.getLightValue();
+            if (oldLightValue != newLightValue) {
+                this.oldLightValue = newLightValue;
+                this.world.checkLight(this.pos);
+            }
+
+        }
+
+        super.markForUpdate();
+    }
 
     @Override
     public void readFromNBT(NBTTagCompound compound) {
         super.readFromNBT(compound);
 
-        this.beamLength = 0;
-        this.otherBeamFormer = null;
-        this.connection = null;
-        this.listenerLinkedList = null;
+        this.beamLength = compound.getInteger("beamLength");
         this.hideBeam = compound.getBoolean("hideBeam");
     }
 
@@ -461,6 +487,14 @@ public class TileDenseBeamFormer extends AENetworkTile implements IGridTickable,
 
         var oldFlags = this.clientFlags;
         this.clientFlags = data.readByte();
+
+
+        final int newLightValue = this.getLightValue();
+        if (newLightValue != this.oldLightValue) {
+            this.oldLightValue = newLightValue;
+            this.world.checkLight(this.pos);
+            shouldRedraw = true;
+        }
 
         return shouldRedraw || oldFlags != this.clientFlags;
     }
