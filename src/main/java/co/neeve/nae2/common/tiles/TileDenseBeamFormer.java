@@ -98,7 +98,7 @@ public class TileDenseBeamFormer extends AENetworkTile implements IGridTickable,
     }
 
     private void updateEnergyConsumption() {
-        this.getProxy().setIdlePowerUsage(Math.pow(Math.max(2d, this.beamLength), 1.05));
+        this.getProxy().setIdlePowerUsage(Math.pow(Math.max(2d, this.beamLength), 1.05) * 2d);
     }
 
     @Override
@@ -331,7 +331,7 @@ public class TileDenseBeamFormer extends AENetworkTile implements IGridTickable,
         BlockPos loc = this.pos;
         final LinkedHashSet<BlockPos> blockSet = new LinkedHashSet<>();
 
-        for (int i = 0; i < 32 * 3; i++) {
+        for (int i = 0; i < 96; i++) {
             loc = loc.offset(dir);
 
             final TileEntity te = world.getTileEntity(loc);

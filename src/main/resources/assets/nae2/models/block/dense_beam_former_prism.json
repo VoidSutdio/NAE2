@@ -1,0 +1,21 @@
+{
+    "ambientocclusion": false,
+    "textures": {
+        "glass": "nae2:part/beam_former_glass"
+    },
+    "elements": [
+        {
+            "from": [6, 6, 5],
+            "to": [10, 10, 14],
+            "rotation": {"angle": 0, "axis": "y", "origin": [0, 0, 15]},
+            "faces": {
+                "north": {"uv": [10, 10, 14, 6], "rotation": 270, "texture": "#glass"},
+                "east": {"uv": [10, 6, 1, 10], "rotation": 180, "texture": "#glass"},
+                "west": {"uv": [10, 6, 1, 10], "texture": "#glass"},
+                "up": {"uv": [10, 6, 1, 10], "rotation": 90, "texture": "#glass"},
+                "down": {"uv": [10, 6, 1, 10], "rotation": 270, "texture": "#glass"}
+            }
+        }
+    ],
+    "ae2_uvl_marker": true
+}

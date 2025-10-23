@@ -1,48 +1,34 @@
 {
   "forge_marker": 1,
   "defaults": {
-    "model": "appliedenergistics2:wireless_access_point_chassis",
-    "y": 180
+    "model": "nae2:dense_beam_former_chassis"
   },
   "variants": {
     "state": {
       "off": {
         "submodel": {
           "state": {
-            "model": "appliedenergistics2:wireless_access_point_status_off"
+            "model": "nae2:dense_beam_former_status_off"
           },
-          "torch": {
-            "model": "appliedenergistics2:wireless_access_point_off"
+          "glass": {
+            "model": "nae2:dense_beam_former_prism"
           }
         }
       },
       "on": {
         "submodel": {
           "state": {
-            "model": "appliedenergistics2:wireless_access_point_status_on"
+            "model": "nae2:dense_beam_former_status_on"
           },
-          "torch": {
-            "model": "appliedenergistics2:wireless_access_point_off"
-          }
-        }
-      },
-      "has_channel": {
-        "submodel": {
-          "state": {
-            "model": "appliedenergistics2:wireless_access_point_status_has_channel"
-          },
-          "torch": {
-            "model": "appliedenergistics2:wireless_access_point_on"
+          "glass": {
+            "model": "nae2:dense_beam_former_prism"
           }
         }
       },
       "beaming": {
         "submodel": {
           "state": {
-            "model": "appliedenergistics2:wireless_access_point_status_has_channel"
-          },
-          "torch": {
-            "model": "appliedenergistics2:wireless_access_point_on"
+            "model": "nae2:dense_beam_former_status_beaming"
           }
         }
       }

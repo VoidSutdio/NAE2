@@ -1,0 +1,245 @@
+{
+    "parent": "block/block",
+    "textures": {
+        "particle": "appliedenergistics2:blocks/wireless_access_point_inside",
+        "inside": "appliedenergistics2:blocks/wireless_access_point_inside",
+        "sides": "appliedenergistics2:parts/monitor_sides",
+        "sidesStatus": "appliedenergistics2:parts/monitor_sides_status"
+    },
+    "elements": [
+        {
+            "from": [4, 4, 15],
+            "to": [12, 12, 16],
+            "rotation": {"angle": 0, "axis": "y", "origin": [0, 0, 16]},
+            "faces": {
+                "north": {"uv": [12, 4, 4, 12], "texture": "#sides"},
+                "east": {"uv": [16, 6, 15, 10], "texture": "#sidesStatus"},
+                "south": {"uv": [12, 4, 4, 12], "texture": "#sides"},
+                "west": {"uv": [1, 6, 0, 10], "texture": "#sidesStatus"},
+                "up": {"uv": [6, 1, 10, 0], "texture": "#sidesStatus"},
+                "down": {"uv": [6, 16, 10, 15], "texture": "#sidesStatus"}
+            }
+        },
+        {
+            "from": [4, 4, 14],
+            "to": [12, 12, 15],
+            "rotation": {"angle": 0, "axis": "y", "origin": [0, 0, 16]},
+            "faces": {
+                "north": {"uv": [12, 4, 4, 12], "texture": "#inside"},
+                "east": {"uv": [15, 4, 14, 12], "texture": "#sides"},
+                "south": {"uv": [12, 4, 4, 12], "texture": "#inside"},
+                "west": {"uv": [2, 4, 1, 12], "texture": "#sides"},
+                "up": {"uv": [4, 2, 12, 1], "texture": "#sides"},
+                "down": {"uv": [4, 15, 12, 14], "texture": "#sides"}
+            }
+        },
+        {
+            "name": "Side Antenna I Up",
+            "from": [5, 11, 12],
+            "to": [11, 12, 14],
+            "rotation": {"angle": 0, "axis": "y", "origin": [0, 0, 16]},
+            "faces": {
+                "north": {"uv": [11, 4, 5, 5], "texture": "#inside"},
+                "east": {"uv": [14, 4, 12, 5], "texture": "#sides"},
+                "south": {"uv": [11, 4, 5, 5], "texture": "#inside"},
+                "west": {"uv": [4, 4, 2, 5], "texture": "#sides"},
+                "up": {"uv": [5, 4, 11, 2], "texture": "#sides"},
+                "down": {"uv": [5, 14, 11, 12], "texture": "#sides"}
+            }
+        },
+        {
+            "name": "Side Antenna I Down",
+            "from": [5, 4, 12],
+            "to": [11, 5, 14],
+            "rotation": {"angle": 0, "axis": "y", "origin": [0, 0, 16]},
+            "faces": {
+                "north": {"uv": [11, 11, 5, 12], "texture": "#inside"},
+                "east": {"uv": [14, 11, 12, 12], "texture": "#sides"},
+                "south": {"uv": [11, 11, 5, 12], "texture": "#inside"},
+                "west": {"uv": [4, 11, 2, 12], "texture": "#sides"},
+                "up": {"uv": [5, 4, 11, 2], "texture": "#sides"},
+                "down": {"uv": [5, 14, 11, 12], "texture": "#sides"}
+            }
+        },
+        {
+            "name": "Side Antenna I West",
+            "from": [4, 5, 12],
+            "to": [5, 11, 14],
+            "rotation": {"angle": 0, "axis": "y", "origin": [0, 0, 16]},
+            "faces": {
+                "north": {"uv": [5, 5, 4, 11], "texture": "#inside"},
+                "east": {"uv": [14, 5, 12, 11], "texture": "#sides"},
+                "south": {"uv": [12, 5, 11, 11], "texture": "#inside"},
+                "west": {"uv": [4, 5, 2, 11], "texture": "#sides"},
+                "up": {"uv": [4, 4, 5, 2], "texture": "#sides"},
+                "down": {"uv": [4, 14, 5, 12], "texture": "#sides"}
+            }
+        },
+        {
+            "name": "Side Antenna I East",
+            "from": [11, 5, 12],
+            "to": [12, 11, 14],
+            "rotation": {"angle": 0, "axis": "y", "origin": [0, 0, 16]},
+            "faces": {
+                "north": {"uv": [12, 5, 11, 11], "texture": "#inside"},
+                "east": {"uv": [14, 5, 12, 11], "texture": "#sides"},
+                "south": {"uv": [5, 5, 4, 11], "texture": "#inside"},
+                "west": {"uv": [4, 5, 2, 11], "texture": "#sides"},
+                "up": {"uv": [11, 4, 12, 2], "texture": "#sides"},
+                "down": {"uv": [11, 14, 12, 12], "texture": "#sides"}
+            }
+        },
+        {
+            "name": "Side Antenna II Up",
+            "from": [6, 12, 9],
+            "to": [10, 13, 15],
+            "rotation": {"angle": 0, "axis": "y", "origin": [0, 0, 16]},
+            "faces": {
+                "north": {"uv": [10, 3, 6, 4], "texture": "#inside"},
+                "east": {"uv": [14, 3, 8, 4], "texture": "#sides"},
+                "south": {"uv": [10, 3, 6, 4], "texture": "#inside"},
+                "west": {"uv": [8, 3, 2, 4], "texture": "#sides"},
+                "up": {"uv": [6, 7, 10, 1], "texture": "#sides"},
+                "down": {"uv": [6, 15, 10, 9], "texture": "#sides"}
+            }
+        },
+        {
+            "name": "Side Antenna II Down",
+            "from": [6, 3, 9],
+            "to": [10, 4, 15],
+            "rotation": {"angle": 0, "axis": "y", "origin": [0, 0, 16]},
+            "faces": {
+                "north": {"uv": [10, 12, 6, 13], "texture": "#inside"},
+                "east": {"uv": [14, 12, 8, 13], "texture": "#sides"},
+                "south": {"uv": [10, 12, 6, 13], "texture": "#inside"},
+                "west": {"uv": [8, 12, 2, 13], "texture": "#sides"},
+                "up": {"uv": [6, 7, 10, 1], "texture": "#sides"},
+                "down": {"uv": [6, 15, 10, 9], "texture": "#sides"}
+            }
+        },
+        {
+            "name": "Side Antenna II West",
+            "from": [3, 6, 9],
+            "to": [4, 10, 15],
+            "rotation": {"angle": 0, "axis": "y", "origin": [0, 0, 16]},
+            "faces": {
+                "north": {"uv": [4, 6, 3, 10], "texture": "#inside"},
+                "east": {"uv": [15, 6, 9, 10], "texture": "#sides"},
+                "south": {"uv": [13, 6, 12, 10], "texture": "#inside"},
+                "west": {"uv": [7, 6, 1, 10], "texture": "#sides"},
+                "up": {"uv": [3, 8, 4, 2], "texture": "#sides"},
+                "down": {"uv": [3, 14, 4, 8], "texture": "#sides"}
+            }
+        },
+        {
+            "name": "Side Antenna II East",
+            "from": [12, 6, 9],
+            "to": [13, 10, 15],
+            "rotation": {"angle": 0, "axis": "y", "origin": [0, 0, 16]},
+            "faces": {
+                "north": {"uv": [13, 6, 12, 10], "texture": "#inside"},
+                "east": {"uv": [15, 6, 9, 10], "texture": "#sides"},
+                "south": {"uv": [4, 6, 3, 10], "texture": "#inside"},
+                "west": {"uv": [7, 6, 1, 10], "texture": "#sides"},
+                "up": {"uv": [12, 8, 13, 2], "texture": "#sides"},
+                "down": {"uv": [12, 14, 13, 8], "texture": "#sides"}
+            }
+        },
+        {
+            "name": "Side Antenna III West",
+            "from": [3, 7, 8],
+            "to": [4, 9, 9],
+            "rotation": {"angle": 0, "axis": "y", "origin": [0, 0, 15]},
+            "faces": {
+                "north": {"uv": [4, 7, 3, 9], "texture": "#inside"},
+                "east": {"uv": [9, 7, 8, 9], "texture": "#sides"},
+                "south": {"uv": [13, 7, 12, 9], "texture": "#inside"},
+                "west": {"uv": [8, 7, 7, 9], "texture": "#sides"},
+                "up": {"uv": [3, 8, 4, 7], "texture": "#sides"},
+                "down": {"uv": [3, 9, 4, 8], "texture": "#sides"}
+            }
+        },
+        {
+            "name": "Side Antenna III Up",
+            "from": [7, 12, 8],
+            "to": [9, 13, 9],
+            "rotation": {"angle": 0, "axis": "y", "origin": [0, 0, 15]},
+            "faces": {
+                "north": {"uv": [9, 3, 7, 4], "texture": "#inside"},
+                "east": {"uv": [9, 3, 8, 4], "texture": "#sides"},
+                "south": {"uv": [9, 3, 7, 4], "texture": "#inside"},
+                "west": {"uv": [8, 3, 7, 4], "texture": "#sides"},
+                "up": {"uv": [7, 8, 9, 7], "texture": "#sides"},
+                "down": {"uv": [7, 9, 9, 8], "texture": "#sides"}
+            }
+        },
+        {
+            "name": "Side Antenna III Down",
+            "from": [7, 3, 8],
+            "to": [9, 4, 9],
+            "rotation": {"angle": 0, "axis": "y", "origin": [0, 0, 15]},
+            "faces": {
+                "north": {"uv": [9, 12, 7, 13], "texture": "#inside"},
+                "east": {"uv": [9, 12, 8, 13], "texture": "#sides"},
+                "south": {"uv": [9, 12, 7, 13], "texture": "#inside"},
+                "west": {"uv": [8, 12, 7, 13], "texture": "#sides"},
+                "up": {"uv": [7, 8, 9, 7], "texture": "#sides"},
+                "down": {"uv": [7, 9, 9, 8], "texture": "#sides"}
+            }
+        },
+        {
+            "name": "Side Antenna III East",
+            "from": [12, 7, 8],
+            "to": [13, 9, 9],
+            "rotation": {"angle": 0, "axis": "y", "origin": [0, 0, 15]},
+            "faces": {
+                "north": {"uv": [13, 7, 12, 9], "texture": "#inside"},
+                "east": {"uv": [9, 7, 8, 9], "texture": "#sides"},
+                "south": {"uv": [4, 7, 3, 9], "texture": "#inside"},
+                "west": {"uv": [8, 7, 7, 9], "texture": "#sides"},
+                "up": {"uv": [12, 8, 13, 7], "texture": "#sides"},
+                "down": {"uv": [12, 9, 13, 8], "texture": "#sides"}
+            }
+        }
+    ],
+    "display": {
+        "thirdperson_righthand": {
+            "rotation": [90, 0, 0],
+            "translation": [0, 4.75, -2.5],
+            "scale": [0.8, 0.8, 0.8]
+        },
+        "thirdperson_lefthand": {
+            "rotation": [90, 0, 0],
+            "translation": [0, 4.75, -2.5],
+            "scale": [0.8, 0.8, 0.8]
+        },
+        "firstperson_righthand": {
+            "rotation": [90, 0, 0],
+            "translation": [0, 3, 0],
+            "scale": [0.6, 0.6, 0.6]
+        },
+        "firstperson_lefthand": {
+            "rotation": [90, 0, 0],
+            "translation": [0, 3, 0],
+            "scale": [0.6, 0.6, 0.6]
+        },
+        "ground": {
+            "rotation": [90, 0, 0],
+            "translation": [0, 2.5, 0],
+            "scale": [0.5, 0.5, 0.5]
+        },
+        "gui": {
+            "rotation": [135, 0, 45],
+            "translation": [0, 2.75, 0],
+            "scale": [1.05, 1.05, 1.05]
+        },
+        "head": {
+            "rotation": [90, 0, 0],
+            "translation": [0, 14.25, 0]
+        },
+        "fixed": {
+            "rotation": [90, 0, 0],
+            "translation": [0, 2, 0]
+        }
+    }
+}

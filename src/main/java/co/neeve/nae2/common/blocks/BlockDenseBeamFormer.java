@@ -22,6 +22,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;
@@ -32,7 +34,6 @@ public class BlockDenseBeamFormer extends AEBaseTileBlock implements ICustomColl
     public enum State implements IStringSerializable {
         OFF,
         ON,
-        HAS_CHANNEL,
         BEAMING;
 
         @Override
@@ -69,9 +70,16 @@ public class BlockDenseBeamFormer extends AEBaseTileBlock implements ICustomColl
         }
     }
 
+    @SideOnly(Side.CLIENT)
     @Override
     public @NotNull BlockRenderLayer getRenderLayer() {
         return BlockRenderLayer.CUTOUT;
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    public boolean canRenderInLayer(@NotNull IBlockState state, @NotNull BlockRenderLayer layer) {
+        return layer == BlockRenderLayer.CUTOUT || layer == BlockRenderLayer.TRANSLUCENT;
     }
 
     @Override
@@ -79,12 +87,8 @@ public class BlockDenseBeamFormer extends AEBaseTileBlock implements ICustomColl
         State teState = State.OFF;
 
         TileDenseBeamFormer te = this.getTileEntity(worldIn, pos);
-        if (te != null) {
-            if (te.isActive()) {
-                teState = te.isBeaming() ? State.BEAMING : State.HAS_CHANNEL;
-            } else if (te.isPowered()) {
-                teState = State.ON;
-            }
+        if (te != null && te.isActive() && te.isPowered()) {
+            teState = te.isBeaming() ? State.BEAMING : State.ON;
         }
 
         return super.getActualState(state, worldIn, pos).withProperty(STATE, teState);
