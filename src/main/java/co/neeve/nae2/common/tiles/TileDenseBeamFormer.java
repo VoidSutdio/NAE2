@@ -269,7 +269,7 @@ public class TileDenseBeamFormer extends AENetworkTile implements IGridTickable,
     }
 
     public boolean disconnect(@Nullable BlockPos breakPos) {
-        if (this.connection == null && this.otherBeamFormer == null && this.listenerLinkedList == null) {
+        if (this.connection == null) {
             this.updateEnergyConsumption();
             return false;
         }
@@ -303,15 +303,13 @@ public class TileDenseBeamFormer extends AENetworkTile implements IGridTickable,
         this.markForUpdate();
         this.saveChanges();
 
-        if (this.otherBeamFormer != null) {
-            if (this.otherBeamFormer.otherBeamFormer == this) {
-                this.otherBeamFormer.beamLength = newBeamB;
-                this.otherBeamFormer.connection = null;
-                this.otherBeamFormer.otherBeamFormer = null;
-                this.otherBeamFormer.updateEnergyConsumption();
-                this.otherBeamFormer.markForUpdate();
-                this.otherBeamFormer.saveChanges();
-            }
+        if (this.otherBeamFormer != null && this.otherBeamFormer.otherBeamFormer == this) {
+            this.otherBeamFormer.beamLength = newBeamB;
+            this.otherBeamFormer.connection = null;
+            this.otherBeamFormer.otherBeamFormer = null;
+            this.otherBeamFormer.updateEnergyConsumption();
+            this.otherBeamFormer.markForUpdate();
+            this.otherBeamFormer.saveChanges();
             this.otherBeamFormer = null;
         }
 
