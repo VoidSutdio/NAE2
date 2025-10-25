@@ -37,12 +37,13 @@ public class DeprecatedBeamFormerRenderer implements IBeamFormerRenderer {
 			final var beamLength = partBeamFormer.getBeamLength();
 			final var beamLengthHalf = (beamLength + 1) / 2d;
 			final var thickness = partBeamFormer.getBeamThicknessMultiplier();
+            final var reverseOffSet = partBeamFormer.getReverseBeamOffSet();
 
-			drawCube(bufferBuilder,
+            drawCube(bufferBuilder,
 				x + 0.5d + meta.dx() * beamLengthHalf,
 				y + 0.5d + meta.dy() * beamLengthHalf,
 				z + 0.5d + meta.dz() * beamLengthHalf,
-				beamLength, meta, color, thickness);
+				beamLength, meta, color, thickness, reverseOffSet);
 		};
 	}
 

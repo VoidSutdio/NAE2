@@ -66,7 +66,7 @@ public class BeamFormerRenderHelper {
 	}
 
 	public static void drawCube(BufferBuilder bufferBuilder, double x, double y, double z, double length,
-								StaticBloomMetadata result, float[] rgb, double thicknessMultiplier) {
+								StaticBloomMetadata result, float[] rgb, double thicknessMultiplier, double reverseOffset) {
 		EnumSet<EnumFacing> facings;
 		final double scaleX;
 		final double scaleY;
@@ -76,19 +76,19 @@ public class BeamFormerRenderHelper {
 		// Determine which direction the beam is facing and draw accordingly
 		if (result.dx() != 0) {
 			facings = FACINGS_ALONG_X;
-			scaleX = Math.max(MIN_SCALE, Math.abs(result.dx() * length + result.dx() * 0.25d));
+			scaleX = Math.max(MIN_SCALE, Math.abs(result.dx() * length + result.dx() * reverseOffset));
 			scaleY = thickness;
 			scaleZ = thickness;
 		} else if (result.dy() != 0) {
 			facings = FACINGS_ALONG_Y;
 			scaleX = thickness;
-			scaleY = Math.max(MIN_SCALE, Math.abs(result.dy() * length + result.dy() * 0.25d));
+			scaleY = Math.max(MIN_SCALE, Math.abs(result.dy() * length + result.dy() * reverseOffset));
 			scaleZ = thickness;
 		} else if (result.dz() != 0) {
 			facings = FACINGS_ALONG_Z;
 			scaleX = thickness;
 			scaleY = thickness;
-			scaleZ = Math.max(MIN_SCALE, Math.abs(result.dz() * length + result.dz() * 0.25d));
+			scaleZ = Math.max(MIN_SCALE, Math.abs(result.dz() * length + result.dz() * reverseOffset));
 		} else {
 			return;
 		}

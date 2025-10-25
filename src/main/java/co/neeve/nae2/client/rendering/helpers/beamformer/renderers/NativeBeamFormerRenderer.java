@@ -28,6 +28,7 @@ public class NativeBeamFormerRenderer implements IBeamFormerRenderer {
 		}
 		var metadata = getBloomMetadata(partBeamFormer);
 		var rgb = getColor(partBeamFormer);
+        var reverseOffSet = partBeamFormer.getReverseBeamOffSet();
 
 		GlStateManager.pushMatrix();
 
@@ -35,13 +36,13 @@ public class NativeBeamFormerRenderer implements IBeamFormerRenderer {
 		GlStateManager.translate(x + 0.5, y + 0.5, z + 0.5);
 		GlStateManager.rotate(metadata.yaw(), 0.0F, 1.0F, 0.0F);
 		GlStateManager.rotate(metadata.pitch(), 1.0F, 0.0F, 0.0F);
-		GlStateManager.translate(-0.5, 0.35, -0.5);
+		GlStateManager.translate(-0.5, 0.5 - reverseOffSet / 2, -0.5);
 
 		double thicknessMultiplier = partBeamFormer.getBeamThicknessMultiplier();
 
 		BeaconRenderHelper.renderBeamSegment(0, 0, 0, partialTicks, 1,
 			(double) partBeamFormer.getWorld().getTotalWorldTime(), 0,
-			partBeamFormer.getBeamLength() + 0.3d,
+			partBeamFormer.getBeamLength() + reverseOffSet,
 			rgb, 0.075 * 1.6 * thicknessMultiplier, 0.075 * 2 * thicknessMultiplier);
 
 		GlStateManager.popMatrix();

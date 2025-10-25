@@ -143,6 +143,11 @@ public class TileDenseBeamFormer extends AENetworkTile implements IGridTickable,
         return 2.0;
     }
 
+    @Override
+    public double getReverseBeamOffSet() {
+        return 1.75;
+    }
+
     @SideOnly(Side.CLIENT)
     public void shouldRenderDynamic() {
         if (Platform.isClient()) {
@@ -191,8 +196,9 @@ public class TileDenseBeamFormer extends AENetworkTile implements IGridTickable,
         return this.isPowered() && (this.clientFlags & ACTIVE_FLAG) == ACTIVE_FLAG;
     }
 
+    @SideOnly(Side.CLIENT)
     public boolean isBeaming() {
-        return this.beamLength > 0;
+        return this.paired;
     }
 
     @MENetworkEventSubscribe
@@ -340,13 +346,6 @@ public class TileDenseBeamFormer extends AENetworkTile implements IGridTickable,
 
                 if (pf == opposite) {
                     if (isConnectionValid && potential == this.otherBeamFormer && this.otherBeamFormer.otherBeamFormer == this) {
-                        final int newBeamLength = blockSet.size();
-                        if (this.beamLength != newBeamLength) {
-                            this.beamLength = newBeamLength;
-                            this.updateEnergyConsumption();
-                            this.markForUpdate();
-                            this.saveChanges();
-                        }
                         return TickRateModulation.SLEEP;
                     }
 

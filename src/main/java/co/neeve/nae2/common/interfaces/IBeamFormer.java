@@ -1,6 +1,7 @@
 package co.neeve.nae2.common.interfaces;
 
 import appeng.api.util.AEColor;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -12,15 +13,25 @@ public interface IBeamFormer {
 
 	EnumFacing getDirection();
 
-	World getWorld();
-
 	boolean isValid();
 
 	boolean shouldRenderBeam();
 
-	BlockPos getPos();
+    TileEntity getTile();
+
+    default World getWorld() {
+        return getTile().getWorld();
+    }
+
+	default BlockPos getPos() {
+        return this.getTile().getPos();
+    }
 
 	default double getBeamThicknessMultiplier() {
 		return 1.0;
 	}
+
+    default double getReverseBeamOffSet() {
+        return 0.375d;
+    }
 }
