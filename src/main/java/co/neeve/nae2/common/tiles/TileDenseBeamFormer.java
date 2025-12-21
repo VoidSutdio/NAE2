@@ -57,10 +57,7 @@ public class TileDenseBeamFormer extends AENetworkTile implements IGridTickable,
     private boolean hideBeam = false;
     private int oldLightValue = -1;
 
-    @SideOnly(Side.CLIENT)
     private boolean paired = false;
-
-    @SideOnly(Side.CLIENT)
     private boolean rendererRegistered = false;
 
     private static final int POWERED_FLAG = 1;
@@ -196,9 +193,11 @@ public class TileDenseBeamFormer extends AENetworkTile implements IGridTickable,
         return this.isPowered() && (this.clientFlags & ACTIVE_FLAG) == ACTIVE_FLAG;
     }
 
-    @SideOnly(Side.CLIENT)
     public boolean isBeaming() {
-        return this.paired;
+        if (Platform.isClient()) {
+            return this.paired;
+        }
+        return (this.beamLength != 0 || this.otherBeamFormer != null) && this.isActive() && this.isPowered() && !this.hideBeam;
     }
 
     @MENetworkEventSubscribe
