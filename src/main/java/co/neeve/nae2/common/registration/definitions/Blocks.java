@@ -173,24 +173,29 @@ public class Blocks {
 				}
 			})
             .item(block -> new AEBaseItemBlock(block) {
-                @Override
-                public boolean placeBlockAt(ItemStack stack, EntityPlayer player, World w, BlockPos pos,
-                                            EnumFacing side, float hitX, float hitY, float hitZ, IBlockState newState) {
-                    if (super.placeBlockAt(stack, player, w, pos, side, hitX, hitY, hitZ, newState)) {
-                        final AEBaseTile tile = ((AEBaseTileBlock) this.block).getTileEntity(w, pos);
+				@Override
+				public boolean placeBlockAt(ItemStack stack, EntityPlayer player, World w, BlockPos pos,
+											EnumFacing side, float hitX, float hitY, float hitZ, IBlockState newState) {
+					if (!super.placeBlockAt(stack, player, w, pos, side, hitX, hitY, hitZ, newState)) {
+						return false;
+					}
 
-                        if (tile == null) {
-                            return true;
-                        }
+					final AEBaseTile tile = ((AEBaseTileBlock) this.block).getTileEntity(w, pos);
+					if (tile == null) return true;
 
-                        EnumFacing up = side == EnumFacing.UP || side == EnumFacing.DOWN ? EnumFacing.SOUTH : EnumFacing.UP;
-                        tile.setOrientation(side, up);
-                        tile.onPlacement(stack, player, side);
+					final EnumFacing forward = side;
 
-                        return true;
-                    }
-                    return false;
-                }
+					EnumFacing up = EnumFacing.UP;
+					if (forward == EnumFacing.UP || forward == EnumFacing.DOWN) {
+						up = EnumFacing.fromAngle(player.rotationYaw);
+						if (up == forward) up = EnumFacing.NORTH;
+					}
+
+					tile.setOrientation(forward, up);
+					tile.onPlacement(stack, player, side);
+
+					return true;
+				}
             })
 			.features(Features.BEAM_FORMERS)
 			.build();

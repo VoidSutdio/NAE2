@@ -56,18 +56,6 @@ public class BlockDenseBeamFormer extends AEBaseTileBlock implements ICustomColl
     @Override
     public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
         super.onBlockPlacedBy(worldIn, pos, state, placer, stack);
-
-        TileDenseBeamFormer te = this.getTileEntity(worldIn, pos);
-        if (te != null) {
-            EnumFacing forward = EnumFacing.getDirectionFromEntityLiving(pos, placer);
-            EnumFacing up = EnumFacing.UP;
-
-            if (forward == EnumFacing.UP || forward == EnumFacing.DOWN) {
-                up = EnumFacing.fromAngle(placer.rotationYaw);
-            }
-
-            te.setOrientation(forward, up);
-        }
     }
 
     @SideOnly(Side.CLIENT)
