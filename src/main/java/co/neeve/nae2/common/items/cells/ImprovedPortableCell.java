@@ -62,9 +62,6 @@ public class ImprovedPortableCell extends DensePortableCell {
         }
 
         ICellInventory<IAEItemStack> inv = cellHandler.getCellInv();
-        if (!containsType(inv, aeItem)) {
-            return false;
-        }
 
         PlayerSource source = new PlayerSource(event.getEntityPlayer(), null);
         IAEItemStack overflow = inv.injectItems(aeItem, Actionable.SIMULATE, source);
@@ -108,10 +105,6 @@ public class ImprovedPortableCell extends DensePortableCell {
                 continue;
             }
 
-            if (!containsType(inv, aeDrop)) {
-                continue;
-            }
-
             PlayerSource source = new PlayerSource(player, null);
             IAEItemStack overflow = inv.injectItems(aeDrop, Actionable.SIMULATE, source);
             if (overflow == null) {
@@ -139,27 +132,6 @@ public class ImprovedPortableCell extends DensePortableCell {
                     .getCellInventory(cellStack, null, getChannel());
         } catch (Exception e) {
             return null;
-        }
-    }
-
-    private boolean containsType(@NotNull ICellInventory<IAEItemStack> inv, @NotNull IAEItemStack probe) {
-        try {
-            IItemList<IAEItemStack> list = AEApi.instance()
-                    .storage()
-                    .getStorageChannel(IItemStorageChannel.class)
-                    .createList();
-            inv.getAvailableItems(list);
-            if (list.findPrecise(probe) != null) {
-                return true;
-            }
-            for (IAEItemStack s : list) {
-                if (s != null && s.isSameType(probe)) {
-                    return true;
-                }
-            }
-            return false;
-        } catch (Throwable t) {
-            return false;
         }
     }
 
