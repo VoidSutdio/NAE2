@@ -27,6 +27,8 @@ public class InterfaceTunnelGridCache implements IGridCache {
 	private final IGrid grid;
 	protected Map<Short, CapabilityContainer> containerMap = new MapMaker().weakValues().makeMap();
 	protected WeakHashMap<PartP2PInterface, HashSet<Object>> tunnelCapCache = new WeakHashMap<>();
+	private final HashSet<Short> pendingNetworkUpdates = new HashSet<>();
+	private boolean updatingTunnelNetworks;
 
 	public InterfaceTunnelGridCache(IGrid grid) {this.grid = grid;}
 
@@ -91,17 +93,38 @@ public class InterfaceTunnelGridCache implements IGridCache {
 	public void updateTunnelNetwork(short freq) {
 		if (freq == 0) return;
 
+		// Capability discovery can synchronously trigger another P2P cache update.
+		this.pendingNetworkUpdates.add(freq);
+		if (this.updatingTunnelNetworks) return;
+
+		this.updatingTunnelNetworks = true;
+		try {
+			while (!this.pendingNetworkUpdates.isEmpty()) {
+				var iterator = this.pendingNetworkUpdates.iterator();
+				var pendingFreq = iterator.next();
+				iterator.remove();
+				this.rebuildTunnelNetwork(pendingFreq);
+			}
+		} finally {
+			this.updatingTunnelNetworks = false;
+		}
+	}
+
+	private void rebuildTunnelNetwork(short freq) {
 		var cache = this.getCapabilityCacheForFreq(freq);
 		if (cache == null) return;
 
 		var p2pCache = (P2PCache) this.grid.getCache(P2PCache.class);
-		var inputs = p2pCache.getInputs(freq, PartP2PInterface.class);
+		// TunnelCollection iterates directly over P2PCache's live multimap.
+		var tunnels = new ArrayList<PartP2PInterface>();
+		for (var input : p2pCache.getInputs(freq, PartP2PInterface.class)) {
+			tunnels.add((PartP2PInterface) input);
+		}
 
 		var itemHandlerList = new ArrayList<IItemHandler>();
 		var fluidHandlerList = new ArrayList<IFluidHandler>();
-		for (var input : inputs) {
-			var tunnel = (PartP2PInterface) input;
-			var tile = ((PartP2PInterface) input).getFacingTileEntity();
+		for (var tunnel : tunnels) {
+			var tile = tunnel.getFacingTileEntity();
 			var facing = tunnel.getFacing().getOpposite();
 
 			var capSet = this.tunnelCapCache.computeIfAbsent(tunnel, k -> new HashSet<>());
